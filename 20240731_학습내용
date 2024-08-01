@@ -1,0 +1,118 @@
+JPA join 학습 내용
+1. 실습 구조
+	- step01~ step03 단계까지 소스 보고 이해하기
+	- DBeaver와 실시간 콘솔창 꼼꼼히 확인 하면서 이해하기
+		- step01 : 소스확인 -> @Entity 주석 해제 -> 실행 -> 서버 콘솔창 & DBeaver
+	
+2. join
+	- 서로 다른 table간의 연관된 데이터를 기준으로 검색 및 관리
+	- pk & fk 구조로 간주
+	- 예시
+		직원 한명은 하나의 꼭 부서 하나에 소속되어야 함
+			emp 관점에선 emp와 dept 관계는 1:1
+		부서 하나는 직원 없거나, 한명이거나, 여러명의 직원들이 소속되어 있음
+			dept관점에선 dept와 emp 관계는 1:다
+			
+3. 실습 단계
+3-1. step01
+1. 문제점
+	1-1.
+	- 정상 실행 단 데이터 무결성 이슈
+	- 왜? 특정 멤버가 존재하지 않는 팀에 소속된 결과 야기
+	
+	1-2. 고유해야 하는 pk 값으로 설정한 sequence가 두개의 table이 공유해서 사용하는 이슈 발생
+2. 콘솔창 실행 결과
+drop table Team1 cascade constraints
+drop sequence hibernate_sequence
+create sequence hibernate_sequence start with 1 increment by 1
+create table Member1 (member_id number(19,0) not null, name varchar2(20), team_id number(19,0), primary key (member_id))
+create table Team1 (team_id number(19,0) not null, team_name varchar2(20), primary key (team_id))
+select hibernate_sequence.nextval from dual
+select hibernate_sequence.nextval from dual
+select hibernate_sequence.nextval from dual
+select hibernate_sequence.nextval from dual
+select hibernate_sequence.nextval from dual
+insert into Team1 (team_name, team_id) values (?, ?)
+insert into Team1 (team_name, team_id) values (?, ?)
+insert into Member1 (name, team_id, member_id) values (?, ?, ?)
+insert into Member1 (name, team_id, member_id) values (?, ?, ?)
+insert into Member1 (name, team_id, member_id) values (?, ?, ?)
+---------------
+3-2. step02
+1. step01 단계 1차 개선
+	- sequence 해결
+	- entity 클래스에 사용자 정의 설정
+2. 여전한 문제
+	- member2 table의 team2 id값은 무효한 데이터가 저장
+	- 제대로된 join 설정이 필요한 시점	
+drop table Member2 cascade constraints
+drop table Team2 cascade constraints
+drop sequence member_seq_id
+drop sequence team_seq_id
+create sequence member_seq_id start with 1 increment by 50
+create sequence team_seq_id start with 1 increment by 50
+create table Member2 (member_id number(19,0) not null, name varchar2(20), team_id number(19,0), primary key (member_id))
+create table Team2 (team_id number(19,0) not null, team_name varchar2(20), primary key (team_id))
+select team_seq_id.nextval from dual
+select team_seq_id.nextval from dual
+select member_seq_id.nextval from dual
+select member_seq_id.nextval from dual
+insert into Team2 (team_name, team_id) values (?, ?)
+insert into Team2 (team_name, team_id) values (?, ?)
+insert into Member2 (name, team_id, member_id) values (?, ?, ?)
+insert into Member2 (name, team_id, member_id) values (?, ?, ?)
+insert into Member2 (name, team_id, member_id) values (?, ?, ?)
+------------------
+3-3. step03
+1. 코드 개선 사항
+	Member entity의 teamId변수에 join설정
+	@OnetoOne
+	@JoinColume("team_id")
+	Team3 teamId
+	
+	Member entity의 teamId 타입이 Team3 즉 부모 entity 타입으로 설정
+	
+	
+2. test 코드의 객체 생성 하는 방법이 다름
+ - member 객체 생성시 부모 entity객체의 참조 변수를 여과없이 대입
+	em.persist(new Member3("손흥민", t1)); 
+  	
+	
+	
+3. 실행된 sql문장 	
+	
+drop table Member3 cascade constraints
+drop table Team3 cascade constraints
+drop sequence member3_seq_id
+drop sequence team3_seq_id
+create sequence member3_seq_id start with 1 increment by 50
+create sequence team3_seq_id start with 1 increment by 50
+create table Member3 (
+	member_id number(19,0) not null,
+	name varchar2(20) not null,
+	team_id number(19,0),
+	primary key (member_id)
+);
+create table Team3 (
+	team_id number(19,0) not null,
+	team_name varchar2(20),
+	primary key (team_id)
+);
+alter table Member3 add constraint FKbnxffxdlb8ioisb6e1vekrc4n
+	foreign key (team_id) references Team3 (team_id)
+select team3_seq_id.nextval from dual
+select team3_seq_id.nextval from dual
+select member3_seq_id.nextval from dual
+select member3_seq_id.nextval from dual
+insert into Team3 (team_name, team_id) values (?, ?)
+insert into Team3 (team_name, team_id) values (?, ?)
+insert into Member3 (name, team_id, member_id) values (?, ?, ?)
+insert into Member3 (name, team_id, member_id) values (?, ?, ?)
+insert into Member3 (name, team_id, member_id) values (?, ?, ?)
+	
+	
+-----
+1. orm - jpa, java로 sql자동 생성하면서 rdbms와 연관된 framework
+2. sql Mapper - mybatis, sql을 xml에 직접 작업하는 framework
+
+

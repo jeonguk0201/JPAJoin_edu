@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+	<persistence-unit name="dbinfo">
+		<!-- customer 라는 table과 연관된 필수 클래스 등록 -->
+		   <!--  정통 순수 jpa로 개발시 entity 클래스는 반드시 등록해야 함 
+		   24년 7월에 설치한 sts 버전에선 등록없이도 @Entity 만으로 개발 및 실행 가능 -->
+		<class>model.domain.entity.Customer</class>
+		<class>model.domain.entity.Dept</class>
+
+		<!-- oracle 설정 정보 -->
+		<properties>
+			<property name="javax.persistence.jdbc.driver"
+				value="oracle.jdbc.OracleDriver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+			<property name="javax.persistence.jdbc.user" value="scott" />
+			<property name="javax.persistence.jdbc.password"
+				value="tiger" />
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.OracleDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<!-- <property name="hibernate.format_sql" value="true" /> -->
+			<property name="hibernate.hbm2ddl.auto" value="none" />
+		</properties>
+
+
+		<!-- mysql 설정 정보 -->
+		<!-- <properties> <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" 
+			/> <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/fisa?useSSL=false&amp;allowPublicKeyRetrieval=true" 
+			/> <property name="javax.persistence.jdbc.user" value="root" /> <property 
+			name="javax.persistence.jdbc.password" value="root" /> <property name="hibernate.dialect" 
+			value="org.hibernate.dialect.MySQL8Dialect " /> <property name="hibernate.show_sql" 
+			value="true" /> <property name="hibernate.use_sql_comments" value="true" 
+			/> <property name="hibernate.hbm2ddl.auto" value="create" /> </properties> -->
+
+	</persistence-unit>
+
+</persistence>
