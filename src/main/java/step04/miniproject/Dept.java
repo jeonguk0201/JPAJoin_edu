@@ -4,7 +4,6 @@ package step04.miniproject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +21,6 @@ import lombok.ToString;
 @Setter
 @ToString
 
-@SequenceGenerator(name = "DEPTNO", sequenceName = "DEPTNO",
-				   initialValue = 1, allocationSize = 50)
 @Entity
 public class Dept {
 

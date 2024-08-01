@@ -7,7 +7,7 @@ import javax.persistence.EntityTransaction;
 import org.junit.Test;
 import util.DBUtil;
 
-public class Step04RunTest {
+public class RunTest {
 
 	@Test
 	public void step01Test() {
