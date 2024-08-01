@@ -178,7 +178,7 @@ private void printEmp(EntityManager em) {
 ```
 
 #### 실행 결과
-![alt text](image-1.png)
+![alt text](image.png)
 
 </br>
 
@@ -205,8 +205,7 @@ private void updateDeptLoc(EntityManager em) {
 	}
 ```
 #### 실행 결과
-![alt text](image-2.png)
-
+![alt text](image-1.png)
 </br>
 
 #### Delete ✨
@@ -240,7 +239,7 @@ private void deleteDeptAndEmp(EntityManager em) {
 		System.out.println("====== 부서 정보 삭제 완료 ======\n");
 ```
 #### 실행 결과
-![alt text](image-3.png)
+![alt text](image-2.png)
 
 -------------------------
 
