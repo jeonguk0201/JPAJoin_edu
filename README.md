@@ -243,7 +243,7 @@ private void deleteDeptAndEmp(EntityManager em) {
 
 -------------------------
 
-## 고찰
+## 고찰 (⌐■_■)✨
 #### sql문에서 join은 
 #### SELECT * FROM EMP e, DEPT d WHERE e.DEPTNO = d.DEPTNO;
 #### 같은 식으로 진행되지만
